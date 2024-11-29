@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "w3gc-db-box"
+  },
+  "targets": {
+    "w3gc-db-box": {
+      "hosting": {
+        "w3gc-db-box": [
+          "w3gc-db-box"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
