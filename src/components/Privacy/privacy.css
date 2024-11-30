@@ -1,0 +1,15 @@
+.privacy {
+  text-align: center;
+  padding: 20px;
+  background-color: #eef5f9;
+}
+
+.privacy h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+}
+
+.privacy p {
+  font-size: 1.2rem;
+  color: #34495e;
+}
