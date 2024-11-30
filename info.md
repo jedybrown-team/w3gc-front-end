@@ -26,7 +26,8 @@
     Access URLs: Firebase provides both https://your-app-name.web.app and https://your-app-name.firebaseapp.com as domains.
     Custom Domain: You can also add a custom domain if you have one.
     Automatic HTTPS: Firebase Hosting automatically handles SSL certificates, so your app will be served over HTTPS by default.
-    |||
+
+    Done
 
 ---
 
