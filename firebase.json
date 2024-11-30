@@ -5,12 +5,8 @@
   },
   "hosting": {
     "target": "w3gc-db-box",
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   },
   "emulators": {
     "apphosting": {
@@ -25,7 +21,8 @@
       "port": 9000
     },
     "hosting": {
-      "port": 5000
+      "port": 5000,
+      "target": "w3gc-db-box"
     },
     "ui": {
       "enabled": true
