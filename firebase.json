@@ -6,7 +6,11 @@
   "hosting": {
     "target": "w3gc-db-box",
     "public": "public",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
   },
   "emulators": {
     "apphosting": {
