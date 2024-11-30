@@ -27,6 +27,8 @@
     Custom Domain: You can also add a custom domain if you have one.
     Automatic HTTPS: Firebase Hosting automatically handles SSL certificates, so your app will be served over HTTPS by default.
 
+    Done...
+
 ---
 
 8. Use github action to deploy osting after first or many deploy through CLI - `firebase init hosting:github`
