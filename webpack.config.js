@@ -79,7 +79,7 @@ module.exports = {
         { from: "public/img", to: "img" },
       ],
     }),
-    // Modify the DefinePlugin
+
     new webpack.DefinePlugin({
       "process.env.FORMSPREE_URL": JSON.stringify(process.env.FORMSPREE_URL),
       "process.env.REACT_APP_BACKEND_URL": JSON.stringify(
