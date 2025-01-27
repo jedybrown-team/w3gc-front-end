@@ -10,12 +10,13 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+  const baseUrl = process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
     const fetchCSRFToken = async () => {
       try {
-        const response = await fetch(
-          "https://backend.creativecoderjed.com.ng/api/admin/get-csrf-token"
-        );
+        const response = await fetch(`${baseUrl}/api/admin/get-csrf-token`);
+
         const data = await response.json();
         if (data.csrfToken) {
           setCsrfToken(data.csrfToken);
@@ -34,17 +35,14 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "https://backend.creativecoderjed.com.ng/api/admin/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": csrfToken,
-          },
-          body: JSON.stringify({ email, password, mycsrfToken: csrfToken }),
-        }
-      );
+      const response = await fetch(`${baseUrl}/api/admin/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
+        },
+        body: JSON.stringify({ email, password, mycsrfToken: csrfToken }),
+      });
 
       const result = await response.json();
       if (response.ok) {
