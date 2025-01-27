@@ -14,6 +14,10 @@ const Home = () => {
         <Link to="/login">
           <button>Login</button>
         </Link>
+
+        <Link to="/privacy">
+          <button>Privacy Policy</button>
+        </Link>
       </div>
     </div>
   );
