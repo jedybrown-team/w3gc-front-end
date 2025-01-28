@@ -15,7 +15,9 @@ const Signup = () => {
   useEffect(() => {
     const fetchCSRFToken = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/admin/get-csrf-token`);
+        const response = await fetch(`${baseUrl}/api/admin/get-csrf-token`, {
+          credentials: "include",
+        });
         const data = await response.json();
         if (data.csrfToken) {
           setCsrfToken(data.csrfToken);
@@ -46,6 +48,7 @@ const Signup = () => {
           password,
           mycsrfToken: csrfToken,
         }),
+        credentials: "include",
       });
 
       const result = await response.json();
