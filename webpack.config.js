@@ -1,21 +1,23 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const webpack = require("webpack");
-require("dotenv").config();
+import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import webpack from "webpack";
+import dotenv from "dotenv";
 
-module.exports = {
+dotenv.config();
+
+export default {
   mode: "production",
   entry: "./src/main.jsx",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(process.cwd(), "dist"),
     filename: "bundle.js",
     publicPath: "/",
   },
   devServer: {
     static: {
-      directory: path.join(__dirname, "dist"),
+      directory: path.join(process.cwd(), "dist"),
     },
     port: 5173,
     open: true,
@@ -79,7 +81,6 @@ module.exports = {
         { from: "public/img", to: "img" },
       ],
     }),
-
     new webpack.DefinePlugin({
       "process.env.FORMSPREE_URL": JSON.stringify(process.env.FORMSPREE_URL),
       "process.env.REACT_APP_BACKEND_URL": JSON.stringify(
