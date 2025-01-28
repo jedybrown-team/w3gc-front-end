@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./login.css";
-import { useNavigate, Link } from "react-router-dom"; // Import Link
+import { useNavigate, Link } from "react-router-dom";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseApp } from "../../firebase";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -37,13 +39,21 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      const auth = getAuth(firebaseApp);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const idToken = await userCredential.user.getIdToken();
+
       const response = await fetch(`${baseUrl}/api/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken,
         },
-        body: JSON.stringify({ email, password, mycsrfToken: csrfToken }),
+        body: JSON.stringify({ idToken, mycsrfToken: csrfToken }),
         credentials: "include",
       });
 
@@ -66,6 +76,7 @@ const Login = () => {
       setMessage("");
     }
   };
+
   return (
     <div className="form-container">
       <h2>Login</h2>
