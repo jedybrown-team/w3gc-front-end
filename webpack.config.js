@@ -81,6 +81,10 @@ module.exports = {
     }),
 
     new webpack.DefinePlugin({
+      "process.env.FORMSPREE_URL": JSON.stringify(process.env.FORMSPREE_URL),
+      "process.env.REACT_APP_BACKEND_URL": JSON.stringify(
+        process.env.REACT_APP_BACKEND_URL
+      ),
       "process.env.REACT_APP_FIREBASE_API_KEY": JSON.stringify(
         process.env.REACT_APP_FIREBASE_API_KEY
       ),
@@ -102,8 +106,8 @@ module.exports = {
       "process.env.REACT_APP_FIREBASE_MEASUREMENT_ID": JSON.stringify(
         process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
       ),
-      "process.env.REACT_APP_BACKEND_URL": JSON.stringify(
-        process.env.REACT_APP_BACKEND_URL
+      "process.env.REACT_APP_FIREBASE_DATABASE_URL": JSON.stringify(
+        process.env.REACT_APP_FIREBASE_DATABASE_URL
       ),
     }),
   ],
