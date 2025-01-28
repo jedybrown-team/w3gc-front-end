@@ -108,7 +108,7 @@ const Signup = () => {
         />
 
         <button type="submit" id="signupBtn">
-          Sign Up
+          Sign Up Now
         </button>
       </form>
       <p>
