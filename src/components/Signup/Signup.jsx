@@ -21,6 +21,7 @@ const Signup = () => {
         const data = await response.json();
         if (data.csrfToken) {
           setCsrfToken(data.csrfToken);
+          console.log("csrf: ", data.csrfToken);
         } else {
           console.error("CSRF token missing from server response.");
         }
