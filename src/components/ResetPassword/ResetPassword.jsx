@@ -12,6 +12,7 @@ const ResetPassword = () => {
   const baseUrl = process.env.REACT_APP_BACKEND_URL;
 
   const urlParams = new URLSearchParams(location.search);
+  const mode = urlParams.get("mode");
   const oobCode = urlParams.get("oobCode");
 
   useEffect(() => {
@@ -45,7 +46,7 @@ const ResetPassword = () => {
           "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken,
         },
-        body: JSON.stringify({ oobCode, newPassword }),
+        body: JSON.stringify({ mode, oobCode, newPassword }),
       });
 
       const data = await response.json();
