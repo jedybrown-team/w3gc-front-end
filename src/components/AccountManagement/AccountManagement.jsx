@@ -6,6 +6,7 @@ const AccountManagement = () => {
     "Please wait while we verify your email address."
   );
   const [csrfToken, setCsrfToken] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const baseUrl = process.env.REACT_APP_BACKEND_URL;
@@ -34,6 +35,7 @@ const AccountManagement = () => {
 
     if (!mode || !oobCode) {
       setVerificationStatus("Invalid verification link.");
+      setLoading(false);
       return;
     }
 
@@ -45,7 +47,7 @@ const AccountManagement = () => {
             "Content-Type": "application/json",
             "X-CSRF-Token": csrfToken,
           },
-          body: JSON.stringify({ mode, oobCode, mycsrfToken: csrfToken }),
+          body: JSON.stringify({ mode, oobCode }),
           credentials: "include",
         });
 
@@ -53,10 +55,10 @@ const AccountManagement = () => {
           setVerificationStatus(
             "Email verified successfully. You will be redirected to the login page shortly..."
           );
-          // Redirect after a delay
+
           setTimeout(() => {
             navigate("/login");
-          }, 3000); // Redirect after 3 seconds
+          }, 3000);
         } else {
           setVerificationStatus(
             "Email verification failed. Please try again later or contact support."
@@ -67,6 +69,8 @@ const AccountManagement = () => {
         setVerificationStatus(
           "An error occurred during verification. Please try again later."
         );
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -76,7 +80,9 @@ const AccountManagement = () => {
   return (
     <div className="form-container">
       <h2>Verifying Your Email...</h2>
-      <p id="verificationStatus">{verificationStatus}</p>
+      <p id="verificationStatus">
+        {loading ? "Verifying..." : verificationStatus}
+      </p>
       <input type="hidden" id="csrfToken" name="csrfToken" value={csrfToken} />
     </div>
   );

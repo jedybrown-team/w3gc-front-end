@@ -10,6 +10,8 @@ const Login = () => {
   const [csrfToken, setCsrfToken] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const baseUrl = process.env.REACT_APP_BACKEND_URL;
@@ -20,7 +22,6 @@ const Login = () => {
         const response = await fetch(`${baseUrl}/api/admin/get-csrf-token`, {
           credentials: "include",
         });
-
         const data = await response.json();
         if (data.csrfToken) {
           setCsrfToken(data.csrfToken);
@@ -37,6 +38,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const auth = getAuth(firebaseApp);
@@ -53,7 +55,7 @@ const Login = () => {
           "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken,
         },
-        body: JSON.stringify({ idToken, mycsrfToken: csrfToken }),
+        body: JSON.stringify({ idToken }),
         credentials: "include",
       });
 
@@ -62,9 +64,11 @@ const Login = () => {
         if (result.emailVerified) {
           setMessage("Login successful!");
           setError("");
+          setEmail("");
+          setPassword("");
           navigate("/dashboard");
         } else {
-          setError("Please verify your email to proceed with the login");
+          setError("Please verify your email to proceed with the login.");
           setMessage("");
         }
       } else {
@@ -72,16 +76,32 @@ const Login = () => {
         setMessage("");
       }
     } catch (error) {
-      setError("An error occurred during login. Please try again.");
+      if (error.code === "auth/user-not-found") {
+        setError("User not found.");
+      } else if (error.code === "auth/wrong-password") {
+        setError("Incorrect password.");
+      } else {
+        setError("An error occurred during login. Please try again.");
+      }
       setMessage("");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="form-container">
       <h2>Login</h2>
-      {error && <div className="error">{error}</div>}
-      {message && <div className="message">{message}</div>}
+      {error && (
+        <div className="error" aria-live="assertive">
+          {error}
+        </div>
+      )}
+      {message && (
+        <div className="message" aria-live="assertive">
+          {message}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <input
           type="hidden"
@@ -101,16 +121,26 @@ const Login = () => {
         />
 
         <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit" id="loginBtn">
-          Login
+        <div className="password-input-container">
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <label>
+            <input
+              type="checkbox"
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            Show Password
+          </label>
+        </div>
+
+        <button type="submit" id="loginBtn" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
         </button>
       </form>
       <p>

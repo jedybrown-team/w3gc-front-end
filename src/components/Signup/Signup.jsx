@@ -9,9 +9,11 @@ const Signup = () => {
   const [csrfToken, setCsrfToken] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const baseUrl = process.env.REACT_APP_BACKEND_URL;
 
+  // Fetch CSRF Token on component mount
   useEffect(() => {
     const fetchCSRFToken = async () => {
       try {
@@ -21,7 +23,6 @@ const Signup = () => {
         const data = await response.json();
         if (data.csrfToken) {
           setCsrfToken(data.csrfToken);
-          console.log("csrf: ", data.csrfToken);
         } else {
           console.error("CSRF token missing from server response.");
         }
@@ -31,10 +32,11 @@ const Signup = () => {
     };
 
     fetchCSRFToken();
-  }, []);
+  }, [baseUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await fetch(`${baseUrl}/api/admin/signup`, {
@@ -47,7 +49,6 @@ const Signup = () => {
           username,
           email,
           password,
-          mycsrfToken: csrfToken,
         }),
         credentials: "include",
       });
@@ -56,6 +57,9 @@ const Signup = () => {
       if (response.ok) {
         setMessage("Signup successful!");
         setError("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
       } else {
         setError(result.message || "Signup failed");
         setMessage("");
@@ -63,20 +67,26 @@ const Signup = () => {
     } catch (error) {
       setMessage("");
       setError("An error occurred during signup. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <div className="form-container">
       <h2>Sign Up</h2>
-      {error && <div className="error">{error}</div>}
-      {message && <div className="message">{message}</div>}
+      {error && (
+        <div className="error" aria-live="assertive">
+          {error}
+        </div>
+      )}
+      {message && (
+        <div className="message" aria-live="assertive">
+          {message}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
-        <input
-          type="hidden"
-          id="csrfToken"
-          name="csrfToken"
-          value={csrfToken}
-        />
+        {/* No need to pass csrfToken as a hidden input anymore */}
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -107,8 +117,8 @@ const Signup = () => {
           required
         />
 
-        <button type="submit" id="signupBtn">
-          Sign Up Now
+        <button type="submit" id="signupBtn" disabled={loading}>
+          {loading ? "Signing Up..." : "Sign Up Now"}
         </button>
       </form>
       <p>
