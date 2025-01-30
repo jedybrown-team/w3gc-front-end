@@ -62,6 +62,8 @@ const Login = () => {
       const result = await response.json();
       if (response.ok) {
         if (result.emailVerified) {
+          sessionStorage.setItem("uid", result.uid);
+          sessionStorage.setItem("displayName", result.displayName);
           setMessage("Login successful!");
           setError("");
           setEmail("");
